@@ -3,13 +3,13 @@ from threading import Thread
 import telebot
 from flask import Flask
 
-# 1. Получаем токен из настроек Render (или используем ваш прямой токен)
+# Точный токен бота
 BOT_TOKEN = os.environ.get(
-    "BOT_TOKEN", "8888657910:AAEWipCL5DbLnRypJiLHj-yWugN2sky32w"
+    "BOT_TOKEN", "8888657910:AAEWWipCL5DbLnRypJilHj-yWugN2sky32w"
 )
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# 2. Создаем веб-сервер Flask для требований Render
+# Веб-сервер Flask для требований Render
 app = Flask(__name__)
 
 
@@ -48,16 +48,13 @@ def search_handler(message):
     bot.reply_to(message, "⚠️ Введите корректный артикул (минимум 3 символа).")
     return
 
-  # Здесь добавьте вашу логику поиска запчастей
   bot.reply_to(message, f"🔍 Ищу запчасть по артикулу: **{article}**...")
 
 
 # ==========================================
 
 if __name__ == "__main__":
-  # Запускаем веб-сервер в фоновом потоке
   t = Thread(target=run_web)
   t.start()
 
-  # Запускаем постоянную работу Telegram-бота
   bot.infinity_polling()
