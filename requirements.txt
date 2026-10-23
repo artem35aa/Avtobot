@@ -1,2 +1,4 @@
-pytelegrambotapi
+telebot
 flask
+requests
+beautifulsoup4
