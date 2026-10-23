@@ -3,7 +3,7 @@ from threading import Thread
 import telebot
 from flask import Flask
 import requests
-from bs4вання import BeautifulSoup  # или bs4
+from bs4 import BeautifulSoup
 
 # Точный токен бота
 BOT_TOKEN = "8888657910:AAEWWipCL5DbLnRypJilHj-yWugN2sky32w"
@@ -38,19 +38,16 @@ def search_ozon(article):
 
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Ozon часто меняет структуру классов, но базовый поиск выдает карточки товаров.
-        # Ищем блоки товаров по тегам или ссылкам
         items = []
-        # Ищем ссылки на товары, содержащие /product/
         for a in soup.find_all('a', href=True):
             href = a['href']
             if '/product/' in href and href not in [i['link'] for i in items]:
                 title_elem = a.find(['span', 'div'], string=True)
                 title = title_elem.text.strip() if title_elem else "Автозапчасть с Ozon"
-                if len(title) > 10:   отсеиваем короткий мусор
+                if len(title) > 10:
                     full_link = f"https://www.ozon.ru{href.split('?')[0]}"
                     items.append({'title': title, 'link': full_link})
-                    if len(items) >= 3:  # Берем первые 3 результата
+                    if len(items) >= 3:
                         break
 
         if not items:
@@ -88,10 +85,8 @@ def search_handler(message):
 
     msg = bot.reply_to(message, f"🔍 Ищу запчасть **{article}** на Ozon...")
     
-    # Запускаем парсинг
     search_result = search_ozon(article)
     
-    # Отправляем результаты пользователю
     bot.edit_message_text(
         chat_id=message.chat.id,
         message_id=msg.message_id,
